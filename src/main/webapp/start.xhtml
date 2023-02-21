@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="WEB-INF/samples/pattern.xhtml">
+
+    <ui:define name="head">
+        <title>Start page</title>
+        <h:outputStylesheet name="start.css" library="styles"/>
+    </ui:define>
+
+    <ui:define name="main">
+        <div id="main">
+            <section class="main-timer-part">
+                <h2 class="start-header">Интерактивные часы</h2>
+
+                <div id="timer-datetime">
+                    <span id="date"></span><br/>
+                    <span id="time"></span>
+                </div>
+                <div class="reference">
+                    <h:link id="reference-to-main" outcome="toMain">
+                        Перейти на основную страницу
+                    </h:link>
+                </div>
+            </section>
+        </div>
+
+        <h:outputScript name="start.js" library="scripts"/>
+    </ui:define>
+
+</ui:composition>
+
+</html>

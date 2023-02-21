@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="WEB-INF/samples/core.xhtml">
+
+    <ui:define name="head">
+        <title>Main page</title>
+        <h:outputStylesheet name="core.css" library="styles"/>
+    </ui:define>
+
+    <ui:define name="main">
+        <br/>
+        <div>
+        <section class="main-graph-part">
+            <h2 class="main-header">
+              <span class="main-header-text">
+                График
+              </span>
+            </h2>
+            <div class="graph-part">
+                <canvas class="canvas" width="352" height="352">Интерактивная область графика</canvas>
+                <p class="validate-text" id="paint-status"></p>
+            </div>
+        </section>
+
+        <section class="main-data-part">
+            <h2 class="main-header">
+                <span class="main-header-text">
+                  Данные
+                </span>
+            </h2>
+            <h:form class="main-form">
+                <p class="form-text">Введите координаты точки</p>
+                <p class="validate-text" id="r-status"></p>
+                <p class="validate-text" id="y-status"></p>
+                <p class="validate-text" id="x-status"></p>
+
+                <div class="main-form-variable-part" id="x-group">
+                    <h:outputLabel styleClass="form-variable-name" for="x-select" value="X"/>
+                    <h:selectOneMenu styleClass="select-label"
+                                     id="x-select" value="#{results.result.x}">
+                        <f:selectItem itemValue="-5" itemLabel="-5"/>
+                        <f:selectItem itemValue="-4" itemLabel="-4"/>
+                        <f:selectItem itemValue="-3" itemLabel="-3"/>
+                        <f:selectItem itemValue="-2" itemLabel="-2"/>
+                        <f:selectItem itemValue="-1" itemLabel="-1"/>
+                        <f:selectItem itemValue="0" itemLabel="0"/>
+                        <f:selectItem itemValue="1" itemLabel="1"/>
+                        <f:selectItem itemValue="2" itemLabel="2"/>
+                        <f:selectItem itemValue="3" itemLabel="3"/>
+                        <f:validateRequired/>
+                        <f:validateDoubleRange minimum="-5" maximum="3"/>
+                    </h:selectOneMenu>
+                    <h:message for="x-select"></h:message>
+
+                </div>
+
+                <div class="main-form-variable-part">
+                    <h:outputLabel styleClass="form-variable-name" for="text-y" value="Y"/>
+                    <h:inputText styleClass="form-variable-text-y" id="text-y"
+                                 a:placeholder="Введите Y от -3 до 5" maxlength="10"
+                                 value="#{results.result.y}">
+                        <f:validateRequired/>
+                        <f:validateDoubleRange minimum="-3" maximum="5"/>
+                    </h:inputText>
+                    <h:message for="text-y"></h:message>
+                </div>
+
+                <div class="main-form-variable-part">
+                    <h:outputLabel styleClass="form-variable-name" for="text-r" value="R"/>
+                    <h:inputText styleClass="form-variable-text-r" id="text-r"
+                                 a:placeholder="Слайдер, R от 2 до 5" maxlength="10"
+                                 value="#{results.result.r}">
+                    <f:validateRequired/>
+                    <f:validateDoubleRange minimum="2" maximum="5"/>
+                    </h:inputText>
+                    <h:message for="text-r"></h:message>
+                    <p:slider for="text-r" styleClass="form-variable-slider" onSlide="" minValue="2.0" maxValue="5.0" step="0.1"/>
+                </div>
+
+            <!--<h:inputHidden id="hidden_timezone" name="timezone" value=""/>
+            <h:inputHidden id="hidden_empty" name="empty" value=""/>
+            <h:inputHidden id="hidden_table" name="table" value=""/>-->
+            <h:commandButton styleClass="form-submit-button" id="submit-form-button"
+                             type="submit" value="Отправить" action="#{results.addResult}"></h:commandButton>
+
+            </h:form>
+            <h:form>
+                <h:inputText styleClass="canvas-form-variable-text-x invisible" id="canvas-text-x"
+                             value="#{results.result.x}"/>
+                <h:inputText styleClass="canvas-form-variable-text-y invisible" id="canvas-text-y"
+                             value="#{results.result.y}"/>
+                <h:inputText styleClass="canvas-form-variable-text-r invisible" id="canvas-text-r"
+                             value="#{results.result.r}"/>
+                <h:commandButton styleClass="canvas-form-submit-button invisible" id="canvas-submit-form-button"
+                                 type="submit" value="Отправить" action="#{results.addResult}"></h:commandButton>
+            </h:form>
+        </section>
+
+        </div>
+
+        <section class="main-table-part">
+            <h2 class="main-header">
+                <span class="main-header-text">
+                  Таблица
+                </span>
+            </h2>
+            <div class="table-container">
+                <h:dataTable styleClass="main-table" id="result-main-table"
+                             value="#{results.results}" var="result">
+                    <h:column headerClass="main-table-header">
+                        <f:facet name="header">X</f:facet>
+                        <h:outputText styleClass="table-x-value" value="#{result.x}"/>
+                    </h:column>
+                    <h:column headerClass="main-table-header">
+                        <f:facet name="header">Y</f:facet>
+                        <h:outputText styleClass="table-y-value" value="#{result.y}"/>
+                    </h:column>
+                    <h:column headerClass="main-table-header">
+                        <f:facet name="header">R</f:facet>
+                        <h:outputText styleClass="table-r-value" value="#{result.r}"/>
+                    </h:column>
+                    <h:column headerClass="main-table-header">
+                        <f:facet name="header">Результат работы</f:facet>
+                        <h:outputText value="#{result.inArea}"/>
+                    </h:column>
+                </h:dataTable>
+            </div>
+        </section>
+
+        <h:outputScript library="scripts" name="data.js"/>
+        <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    </ui:define>
+
+</ui:composition>
+
+</html>
